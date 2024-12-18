@@ -16,3 +16,4 @@ public class EmailTokenEntity {
     private LocalDateTime expiresAt;
     private boolean isUsed;
 }
+//
