@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 
 //    @Modifying
     @Transactional
-    @Query("select u. email FROM UserEntity u where u.email = u.email ")
+//    @Query("select u. email FROM UserEntity u where u.email = u.email ")
 //         반환 타입 수정: Optional<UserEntity>
     Optional<UserEntity> findByEmail(String username);
     @Query("SELECT COUNT(u) > 0 FROM UserEntity u WHERE u.isSuspended = true")

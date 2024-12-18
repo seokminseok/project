@@ -34,4 +34,8 @@ public class BoardCommentEntity {
 
     @Column(name = "update_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "is_deleted")
+    private LocalDateTime isDeleted;
+
 }
