@@ -10,7 +10,7 @@
 <body>
 <header class="top-header">
     <div class="header-logo">
-        <img src="/assets/images/header-logo.png" alt="로고" onclick="location.href='/'" style="cursor: pointer">
+        <img src="/assets/images/header-logo.png" alt="로고">
     </div>
     <!--    <li class="nickname" th:text="|안녕하세요, ${email} 님!|">-->
     <!--    </li>-->
@@ -41,7 +41,6 @@
                 <option id="comment" value="댓글">댓글</option>
             </select>
         </div>
-
         <label th:each="comment : ${boardComments}">
             <input type="hidden" id="reportedCommentId" name="reportedCommentId" th:value="${comment.getIndex()}">
         </label>

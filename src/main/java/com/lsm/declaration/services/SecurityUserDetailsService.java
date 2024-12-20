@@ -26,6 +26,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
         // UserEntity 반환
-        return userEntity;
+       return userEntity;
     }
 }

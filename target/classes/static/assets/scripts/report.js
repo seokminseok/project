@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedReason = document.querySelector('input[name="reason"]:checked');
 
 
-
         if (selectedReason.value === "기타" && otherReasonTextarea.value.trim() === "") {
             alert("기타 사유를 입력해주세요.");
             return;

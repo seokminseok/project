@@ -22,7 +22,7 @@ public class ReportScheduler {
     private final Set<String> processedEmails = new HashSet<>();
 
     @Transactional
-//    @Scheduled(cron = "0 */1 * * * *") // 1분마다 실행
+    @Scheduled(cron = "0 */1 * * * *") // 1분마다 실행
     public void countUserWarning() {
         System.out.println("countUserWarning 실행함");
 
