@@ -1,8 +1,10 @@
 package com.lsm.declaration.services;
 
+import com.lsm.declaration.entities.BoardPostEntity;
 import com.lsm.declaration.entities.ReportEntity;
 import com.lsm.declaration.entities.UserEntity;
 import com.lsm.declaration.reportrepository.BoardCommentRepository;
+import com.lsm.declaration.reportrepository.BoardPostRepository;
 import com.lsm.declaration.reportrepository.ReportRepository;
 import com.lsm.declaration.reportrepository.UserRepository;
 import com.lsm.declaration.results.CommonResult;
@@ -19,12 +21,15 @@ public class ReportService {
     private final BoardCommentRepository boardCommentRepository;
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
+    private final BoardPostRepository boardPostRepository;
 
     @Autowired
-    public ReportService(BoardCommentRepository boardCommentRepository, ReportRepository reportRepository, UserRepository userRepository) {
+    public ReportService(BoardCommentRepository boardCommentRepository, ReportRepository reportRepository, UserRepository userRepository, BoardPostRepository boardPostRepository) {
         this.boardCommentRepository = boardCommentRepository;
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
+
+        this.boardPostRepository = boardPostRepository;
     }
 
     // 중복신고 / 본인 글 신고 방지
@@ -39,6 +44,7 @@ public class ReportService {
             throw new IllegalStateException("본인의 글을 신고 할 수 없습니다");
         }
 
+        System.out.println(report.getReportedUserEmail());
         report.setReportedAt(LocalDateTime.now());
         reportRepository.save(report);
         return CommonResult.SUCCESS;
@@ -68,6 +74,13 @@ public class ReportService {
         }
         return isSuspended;
     }
+
+//    @Transactional
+//    public String findByIndex(Integer index) {
+//        Optional<BoardPostEntity> post = boardPostRepository.findById(index);
+//        return post.isPresent() ? post.get().getUserEmail() : null;  // 게시글이 있으면 이메일 반환, 없으면 null 반환
+//    }
+
 
 //    @Transactional
 //    public Result submitReport(ReportEntity report, String reportedEmail) {

@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface BoardCommentRepository extends JpaRepository<BoardCommentEntity, Long> {
-    @Query("SELECT b.index FROM BoardCommentEntity b WHERE b.userEmail = :reportedEmail")
-    List<Integer> findIndexesByReportedEmail(@Param("reportedEmail") String reportedEmail);
+    List<BoardCommentEntity> findByIndex(@Param("index") int index);
 
 }

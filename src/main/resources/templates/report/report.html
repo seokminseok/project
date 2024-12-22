@@ -9,45 +9,36 @@
 </head>
 <body>
 <header class="top-header">
-    <div class="header-logo">
+    <div class="header-logo" >
         <img src="/assets/images/header-logo.png" alt="로고">
     </div>
-    <!--    <li class="nickname" th:text="|안녕하세요, ${email} 님!|">-->
-    <!--    </li>-->
-    <!--    <li id="logoutBtnWrapper" sec:authorize="isAuthenticated()"> &lt;!&ndash; 로그인한 사용자 &ndash;&gt;-->
-    <!--        <a id="logoutBtn" class="&#45;&#45;obj-button -color-primary" th:href="@{/logout}">로그아웃</a>-->
-    <!--    </li>-->
+
 </header>
 
 <main class="report-container">
     <h1>신고하기</h1>
-    <form id="form" method="POST">
+    <form id="form" method="POST" action="/submitReport">
         <div class="input-group">
             <label for="userEmail"></label>
-            <input type="email" id="userEmail" name="userEmail" required maxlength="50" th:value="${email}" >
+            <input type="hidden" id="userEmail" name="userEmail" required maxlength="50" th:value="${email}" >
         </div>
-
-        <!-- 신고 대상 정보 -->
         <div class="input-group">
-            <label for="reportedUserEmail">신고받은 사용자 이메일</label>
-            <input type="email" id="reportedUserEmail" name="reportedUserEmail" required maxlength="50">
+            <label for="reportedUserEmail"></label>
+            <input type="hidden" id="reportedUserEmail" name="reportedUserEmail" required maxlength="50"
+                   th:value="${article.getUserEmail()}">
         </div>
 
         <!-- 신고 상태 -->
         <div class="input-group">
-            신고 유형
+            <label for="status"></label>
             <select id="status" name="status" required>
                 <option id="board" value="게시글">게시글</option>
                 <option id="comment" value="댓글">댓글</option>
             </select>
         </div>
-        <label th:each="comment : ${boardComments}">
-            <input type="hidden" id="reportedCommentId" name="reportedCommentId" th:value="${comment.getIndex()}">
+        <label>
+            <input type="hidden" id="reportedPostId" name="reportedPostId"  th:value="${article.getIndex()}">
         </label>
-        <label th:each="post : ${boardPosts}">
-            <input type="hidden" id="reportedPostId" name="reportedPostId" th:value="${post.getIndex()}">
-        </label>
-        <!-- 신고 사유 -->
         <fieldset class="reason-group">
             <legend>신고 사유</legend>
             <label>
@@ -83,7 +74,7 @@
                 기타
             </label>
         </fieldset>
-        <div class="other-reason">
+        <div class="other-reason" style="margin-top: 1rem">
             <label for="reasonTextarea"></label>
             <textarea id="reasonTextarea" name="reasonDetail" rows="4" maxlength="255"
                       placeholder="기타 사유를 입력하세요"></textarea>

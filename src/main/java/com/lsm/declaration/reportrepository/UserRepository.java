@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 
     UserEntity findByContact(String contact);
 
-//    @Modifying
+    //    @Modifying
     @Transactional
 //    @Query("select u. email FROM UserEntity u where u.email = u.email ")
 //         반환 타입 수정: Optional<UserEntity>

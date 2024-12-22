@@ -1,12 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const reasonRadios = document.querySelectorAll('input[name="reason"]');
     const otherReasonTextarea = document.getElementById("reasonTextarea");
-    const submitBtn = document.getElementById("submitBtn");
     const form = document.getElementById("form");
-    const status = document.getElementById("status");
-    const reportedPostId = document.getElementById("reportedPostId");
-    const reportedCommentId = document.getElementById("reportedCommentId");
-    const reportedUserEmail = document.getElementById("reportedUserEmail")
 
     // 초기 설정
     otherReasonTextarea.disabled = true;
@@ -24,11 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+
     // 폼 제출 시 처리
     form.onsubmit = function (e) {
         e.preventDefault();
 
         const selectedReason = document.querySelector('input[name="reason"]:checked');
+
 
 
         if (selectedReason.value === "기타" && otherReasonTextarea.value.trim() === "") {
@@ -37,14 +34,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 상태에 따라 ID 설정
-        if (status.value === "게시글") {
-            // reportedUserEmail.value =
-            reportedPostId.value = ""; // 게시글 ID 설정
-            reportedCommentId.value = ""; // 댓글 ID 초기화
-        } else if (status.value === "댓글") {
-            reportedPostId.value = ""; // 게시글 ID 설정
-            reportedCommentId.value = ""; // 댓글 ID 설정
-        }
+        // if (status.value === "게시글") {
+        //     // reportedUserEmail.value =
+        //     reportedPostId.value = ""; // 게시글 ID 설정
+        //     reportedCommentId.value = ""; // 댓글 ID 초기화
+        // } else if (status.value === "댓글") {
+        //     reportedPostId.value = ""; // 게시글 ID 설정
+        //     reportedCommentId.value = ""; // 댓글 ID 설정
+        // }
 
         // AJAX 요청 처리
         const xhr = new XMLHttpRequest();
