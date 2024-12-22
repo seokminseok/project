@@ -22,22 +22,23 @@ import java.util.Map;
 @EqualsAndHashCode(of = {"email"})
 @Setter
 @ToString
-public class UserEntity implements UserDetails,OAuth2User  {
+public class UserEntity implements UserDetails, OAuth2User {
 
+    @Getter
     @Id
-    @Column(name = "email", length = 50)
+    @Column(name = "email", length = 50, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", length = 100)
+    @Column(name = "password", length = 100, nullable = false)
     private String password;
 
-    @Column(name = "nickname", length = 10)
+    @Column(name = "nickname", length = 10, nullable = false)
     private String nickname;
 
     @Column(name = "contact", length = 12)
     private String contact;
 
-    @Column(name = "create_at")
+    @Column(name = "create_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "update_at")
@@ -46,19 +47,17 @@ public class UserEntity implements UserDetails,OAuth2User  {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @Column(name = "is_admin")
+    @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
 
-    @Column(name = "is_suspended")
+    @Column(name = "is_suspended", nullable = false)
     private boolean isSuspended;
 
-    @Column(name = "is_verified")
+    @Column(name = "is_verified", nullable = false)
     private boolean isVerified;
 
-    @Column(name = "warning")
+    @Column(name = "warning", nullable = false)
     private int warning;
-
-
 
     @PrePersist
     protected void onCreate() {
@@ -70,10 +69,10 @@ public class UserEntity implements UserDetails,OAuth2User  {
         this.updatedAt = LocalDateTime.now();
     }
 
-
+    // UserDetails 메서드 구현
     @Override
     public String getUsername() {
-        return nickname;
+        return email; // 기본적으로 이메일을 username으로 사용
     }
 
     @Override
@@ -85,37 +84,34 @@ public class UserEntity implements UserDetails,OAuth2User  {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (isAdmin) {
-            authorities.add(new SimpleGrantedAuthority("IS_ADMIN")); // ROLE_* 제거
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // ROLE_ADMIN
+        } else {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER")); // 일반 사용자
         }
         return authorities;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return true; // 계정 만료 여부
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !isSuspended;
+        return !isSuspended; // 계정 잠금 여부
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return true; // 자격 증명 만료 여부
     }
 
     @Override
     public boolean isEnabled() {
-        return isVerified && !isSuspended;
+        return isVerified && !isSuspended; // 계정 활성화 여부
     }
 
-//    @Column(name = "oauth2_provider")
-//    private String oauth2Provider; // 예: GOOGLE, FACEBOOK 등
-//
-//    @Column(name = "oauth2_id")
-//    private String oauth2Id;
-
+    // OAuth2User 메서드 구현
     @Override
     public Map<String, Object> getAttributes() {
         return Map.of(
@@ -126,16 +122,16 @@ public class UserEntity implements UserDetails,OAuth2User  {
                 "updateAt", this.updatedAt,
                 "deletedAt", this.deletedAt,
                 "isAdmin", this.isAdmin,
-                "is_suspended", this.isSuspended,
-                "is_verified", this.isVerified,
+                "isSuspended", this.isSuspended,
+                "isVerified", this.isVerified,
                 "warning", this.warning
         );
     }
 
     @Override
     public String getName() {
-
         return email;
-
     }
+
+
 }

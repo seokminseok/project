@@ -1,14 +1,13 @@
 package com.lsm.declaration.controllers;
 
-import com.lsm.declaration.entities.BoardCommentEntity;
-import com.lsm.declaration.entities.BoardPostEntity;
-import com.lsm.declaration.entities.ReportEntity;
-import com.lsm.declaration.entities.UserEntity;
+import com.lsm.declaration.detail.CustomUserDetails;
+import com.lsm.declaration.entities.*;
 import com.lsm.declaration.reportrepository.BoardCommentRepository;
 import com.lsm.declaration.reportrepository.BoardPostRepository;
 import com.lsm.declaration.reportrepository.ReportRepository;
 import com.lsm.declaration.reportrepository.UserRepository;
 import com.lsm.declaration.results.Result;
+import com.lsm.declaration.services.ArticleService;
 import com.lsm.declaration.services.ReportService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +29,16 @@ import java.util.Optional;
 @Controller
 @RequestMapping(value = "/report")
 public class ReportController {
+    private final ArticleService articleService;
     private final ReportService reportService;
-    private final ReportRepository reportRepository;
-    private final BoardCommentRepository boardCommentRepository;
-    private final BoardPostRepository boardPostRepository;
-    private final UserRepository userRepository;
+
 
     @Autowired
-    public ReportController(ReportService reportService, ReportRepository reportRepository, BoardCommentRepository boardCommentRepository, BoardPostRepository boardPostRepository, UserRepository userRepository) {
-        this.boardCommentRepository = boardCommentRepository;
-        this.boardPostRepository = boardPostRepository;
+    public ReportController(ReportService reportService, ArticleService articleService) {
+
         this.reportService = reportService;
-        this.reportRepository = reportRepository;
-        this.userRepository = userRepository;
+
+        this.articleService = articleService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
@@ -53,19 +49,14 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView CommentReport(@AuthenticationPrincipal UserDetails userDetails) {
-        List<BoardPostEntity> boardPosts = boardPostRepository.findAll();
-        List<BoardCommentEntity> boardComments = boardCommentRepository.findAll();
-        List<UserEntity> users = userRepository.findAll();
-        List<ReportEntity> reports = reportRepository.findAll();
+    public ModelAndView CommentReport(@AuthenticationPrincipal UserDetails userDetails,
+                                      @RequestParam(value = "index" ,required = false)int index) {
+        ArticleEntity article = articleService.getArticleByIndex(index);
         ModelAndView modelAndView = new ModelAndView();
-        if (userDetails instanceof UserEntity user) {
+        if (userDetails instanceof CustomUserDetails user) {
             modelAndView.addObject("email", user.getEmail());
         }
-        modelAndView.addObject("reports", reports);
-        modelAndView.addObject("users", users);
-        modelAndView.addObject("boardPosts", boardPosts);
-        modelAndView.addObject("boardComments", boardComments);
+        modelAndView.addObject("article", article);
         modelAndView.setViewName("report/report");
         return modelAndView;
     }
