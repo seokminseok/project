@@ -13,3 +13,6 @@
 - **신고 기능**: Spring Boot의 RESTful API로 신고 데이터 처리 1분마다 자동 실행되는 scheduler로 빠르고 효율적인 신고 처리가 가능.
 - **이메일 전송 기능**: QnA에서 `JavaMailSender`를 사용하여 사용자에게 이메일을 자동 발송
 - **찜하기 기능**: JPA를 활용하여 찜한 항목을 데이터베이스에 저장하고 조회하며, JavaScript로 UI에서 실시간으로 찜한 항목을 표시.
+
+### 사이트
+https://fave.smindev.com
